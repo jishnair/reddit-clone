@@ -1,4 +1,4 @@
-package com.jishnu.redditclone.model.repository;
+package com.jishnu.redditclone.repository;
 
 import com.jishnu.redditclone.model.User;
 

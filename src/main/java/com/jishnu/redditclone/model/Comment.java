@@ -8,8 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 
-import static javax.persistence.FetchType.LAZY;
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
     private String text;

@@ -20,14 +20,14 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     @NotBlank(message = "username is required")
-    private Long username;
+    private String username;
 
     @NotBlank(message = "password is required")
-    private Long password;
+    private String password;
 
     @Email
     @NotBlank(message = "Email is required")

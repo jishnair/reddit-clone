@@ -29,7 +29,7 @@ import lombok.NonNull;
 public class Subreddit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @NotBlank(message = "Community name is required!")
