@@ -1,20 +1,20 @@
 package com.jishnu.redditclone.service;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
-import javax.transaction.Transactional;
-
 import com.jishnu.redditclone.dto.RegisterRequest;
+import com.jishnu.redditclone.exception.SpringRedditException;
 import com.jishnu.redditclone.model.NotificationEmail;
 import com.jishnu.redditclone.model.User;
 import com.jishnu.redditclone.model.VerificationToken;
 import com.jishnu.redditclone.repository.UserRepository;
 import com.jishnu.redditclone.repository.VerificationTokenRepository;
 
-import org.hibernate.dialect.identity.GetGeneratedKeysDelegate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,6 @@ public class AuthService {
         "please click on the below url to activate your account : " +
         "http://localhost:8080/api/auth/accountVerification/" + token));
 
-        
     }
 
     private String generateVerificationToken(User user){
@@ -58,6 +57,20 @@ public class AuthService {
         verificationTokenRepository.save(verificationToken);
 
         return token;
+    }
+
+	public void verifyAccount(String token) {
+        Optional<VerificationToken> verificationToken= verificationTokenRepository.findByToken(token);
+        verificationToken.orElseThrow(() -> new SpringRedditException("Invalid Token"));
+        fetchUserAndEnable( verificationToken.get());
+    }
+    
+    @Transactional
+    private void fetchUserAndEnable(VerificationToken verificationToken){
+        String username=verificationToken.getUser().getUsername();
+        User user=userRepository.findByUsername(username).orElseThrow(() -> new SpringRedditException("User not found -"+username));
+        user.setEnabled(true);
+        userRepository.save(user);
     }
     
 }
