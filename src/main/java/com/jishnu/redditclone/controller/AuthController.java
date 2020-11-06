@@ -1,5 +1,7 @@
 package com.jishnu.redditclone.controller;
 
+import com.jishnu.redditclone.dto.AuthenticationResponse;
+import com.jishnu.redditclone.dto.LoginRequest;
 import com.jishnu.redditclone.dto.RegisterRequest;
 import com.jishnu.redditclone.service.AuthService;
 
@@ -32,6 +34,11 @@ public class AuthController {
     public ResponseEntity<String> verifyAccount(@PathVariable String token){
         authService.verifyAccount(token);
         return new ResponseEntity<>("Account activated succesfully!",HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest){
+        return authService.login(loginRequest);
     }
 
 
